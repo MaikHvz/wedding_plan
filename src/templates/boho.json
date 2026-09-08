@@ -1,0 +1,23 @@
+{
+  "id": "boho",
+  "slug": "boho",
+  "name": "Boho",
+  "description": "Un estilo natural y relajado: cabecera sobria, retrato de la pareja y galería en espiral. Ideal para bodas al aire libre con alma artesanal.",
+  "category": "Boho · Natural",
+  "version": 1,
+  "themeId": "garden",
+  "musicUrl": "https://archive.org/download/ClairDeLune_2022/Clair-De-Lune.mp3",
+  "suggestedThemeIds": ["garden", "romantic", "ivory", "champagne"],
+  "sections": [
+    { "type": "hero", "variant": "minimal" },
+    { "type": "couple", "variant": "portrait" },
+    { "type": "story", "variant": "classic" },
+    { "type": "gallery", "variant": "masonry" },
+    { "type": "countdown", "variant": "full" },
+    { "type": "event", "variant": "timeline" },
+    { "type": "dresscode", "variant": "swatch" },
+    { "type": "location", "variant": "centered" },
+    { "type": "drive", "variant": "card" },
+    { "type": "footer", "variant": "centered" }
+  ]
+}

@@ -1,0 +1,313 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--t-font-sans, var(--font-jakarta), var(--font-geist-sans), sans-serif);
+  --font-serif: var(--t-font-serif, var(--font-cormorant), var(--font-playfair), Georgia, serif);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Ambient shaders (m05 · identidad visual por plantilla)
+   Animaciones CSS puras, livianas y SSR-safe usadas por
+   `AmbientShader.tsx` para dar profundidad, luz y movimiento
+   a cada ambientación sin depender de WebGL.
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes ambient-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(2%, -3%, 0) scale(1.05); }
+}
+
+@keyframes ambient-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-3%, 2%, 0) scale(1.08); }
+}
+
+@keyframes ambient-shimmer {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.75; }
+}
+
+@keyframes ambient-sweep {
+  0% { transform: translateX(-30%) rotate(8deg); opacity: 0; }
+  15% { opacity: 0.5; }
+  50% { opacity: 0.2; }
+  85% { opacity: 0.5; }
+  100% { transform: translateX(30%) rotate(8deg); opacity: 0; }
+}
+
+@keyframes ambient-fall {
+  0% { transform: translate3d(0, -10%, 0); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.5; }
+  100% { transform: translate3d(0, 110%, 0); opacity: 0; }
+}
+
+@keyframes ambient-sway {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(4px) rotate(3deg); }
+}
+
+@keyframes ambient-pulse-glow {
+  0%, 100% { opacity: 0.25; filter: blur(40px); }
+  50% { opacity: 0.55; filter: blur(55px); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Efectos de carga (destellos/brillos) y revelado por scroll
+   para la web de boda (m09 · ambientación interactiva).
+   CSS puro, liviano y SSR-safe. `prefers-reduced-motion` desactiva
+   todo para respetar accesibilidad.
+   ───────────────────────────────────────────────────────────── */
+
+/* Destello/fade-in de las imágenes de fondo al cargar (solo opacidad;
+   el zoom continuo está en `ken-burns` abajo). */
+@keyframes bg-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.bg-reveal {
+  animation: bg-reveal 1.4s ease-out both;
+}
+
+/* Ken Burns real: zoom lento y continuo sobre imágenes de fondo (15–25s) */
+@keyframes ken-burns {
+  0% { transform: scale(1) translate3d(0, 0, 0); }
+  50% { transform: scale(1.1) translate3d(-1.5%, -1%, 0); }
+  100% { transform: scale(1) translate3d(0, 0, 0); }
+}
+.ken-burns {
+  animation: ken-burns 22s ease-in-out infinite;
+}
+
+/* Entrada escalonada del hero: fade + subida suave (monograma → fecha) */
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+.hero-in {
+  animation: hero-in 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Destello radial (brillo suave) que cruza la portada al cargar */
+@keyframes hero-glint {
+  0% { transform: translateX(-120%) rotate(8deg); opacity: 0; }
+  18% { opacity: 0.65; }
+  60% { opacity: 0.3; }
+  100% { transform: translateX(130%) rotate(8deg); opacity: 0; }
+}
+.hero-glint {
+  animation: hero-glint 2.2s ease-out 0.2s both;
+}
+
+/* Chispitas / destellos que titilan al cargar la web */
+@keyframes sparkle-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes sparkle-float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+  100% { transform: translateY(0); }
+}
+.sparkle {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #fff 0%, var(--t-accent) 55%, transparent 75%);
+  filter: drop-shadow(0 0 4px var(--t-accent));
+  animation: sparkle-twinkle var(--tw-dur, 3s) ease-in-out infinite;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Revelado por scroll: los bloques entran con fade + desplazamiento */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+[data-reveal][data-reveal-from="left"] {
+  transform: translateX(-32px);
+}
+[data-reveal][data-reveal-from="right"] {
+  transform: translateX(32px);
+}
+[data-reveal][data-reveal-from="scale"] {
+  transform: translateY(16px) scale(0.94);
+}
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Botón de música flotante */
+@keyframes music-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--t-accent) 55%, transparent); }
+  50% { box-shadow: 0 0 0 12px transparent; }
+}
+.music-btn-pulse {
+  animation: music-pulse 2.4s ease-in-out infinite;
+}
+@keyframes music-spin {
+  to { transform: rotate(360deg); }
+}
+.music-spinning {
+  animation: music-spin 5s linear infinite;
+}
+
+/* Letra capital decorada (toque editorial en Story) */
+.lead-drop-cap::first-letter {
+  float: left;
+  font-family: var(--t-font-serif, var(--font-cormorant), Georgia, serif);
+  font-size: 3.6em;
+  line-height: 0.82;
+  padding-right: 0.12em;
+  padding-top: 0.05em;
+  color: var(--t-accent);
+  font-weight: 600;
+}
+
+/* Flip 3D de las tarjetas del countdown al cambiar de dígito (Costa) */
+@keyframes countdown-flip {
+  0% { transform: rotateX(0deg); opacity: 1; }
+  45% { transform: rotateX(90deg) translateY(4px); opacity: 0.3; }
+  55% { transform: rotateX(-90deg) translateY(-4px); opacity: 0.3; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+.countdown-flip {
+  animation: countdown-flip 0.7s ease-in-out;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Cursor custom (Urbana): punto + arco que sigue al puntero */
+.custom-cursor-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+.custom-cursor-dot {
+  position: fixed;
+  z-index: 101;
+  pointer-events: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: var(--t-accent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--t-accent) 70%, transparent);
+  transform: translate(-50%, -50%);
+}
+.custom-cursor-ring {
+  position: fixed;
+  z-index: 100;
+  pointer-events: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  border: 1.5px solid color-mix(in srgb, var(--t-accent) 60%, transparent);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+}
+.custom-cursor-ring.is-hovering {
+  width: 52px;
+  height: 52px;
+  border-color: var(--t-accent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .has-custom-cursor,
+  .has-custom-cursor a,
+  .has-custom-cursor button {
+    cursor: none;
+  }
+}
+
+/* Rastro de chispas que siguen al ratón (Elegance) */
+@keyframes trail-fade {
+  from { opacity: 0.9; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.2); }
+}
+.trail-spark {
+  position: fixed;
+  z-index: 99;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #fff 0%, var(--t-accent) 50%, transparent 75%);
+  animation: trail-fade 0.8s ease-out both;
+  will-change: transform, opacity;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Panel de invitados (UX app): animaciones de slide-over,
+   toasts, modales y confirmaciones. CSS puro, SSR-safe.
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.28s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-scale-in {
+  animation: scale-in 0.22s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes slide-up-toast {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up-toast 0.25s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Controles de acceso: reduce movimiento */
+@media (prefers-reduced-motion: reduce) {
+  [data-ambient-shader] *,
+  .sparkle,
+  .hero-glint,
+  .bg-reveal,
+  .ken-burns,
+  .hero-in,
+  .countdown-flip,
+  .trail-spark,
+  [data-reveal],
+  .animate-slide-in-right,
+  .animate-scale-in,
+  .animate-slide-up {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

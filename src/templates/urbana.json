@@ -1,0 +1,23 @@
+{
+  "id": "urbana",
+  "slug": "urbana",
+  "name": "Urbana",
+  "description": "Diseño contemporáneo en blanco y negro: cabecera dividida, historia directa y evento compacto. Perfecta para bodas modernas en la ciudad.",
+  "category": "Urbana · Moderna",
+  "version": 1,
+  "themeId": "modern-black",
+  "musicUrl": "https://archive.org/download/ClairDeLune_2022/Clair-De-Lune.mp3",
+  "suggestedThemeIds": ["modern-black", "classic-white", "ivory", "champagne"],
+  "sections": [
+    { "type": "hero", "variant": "split" },
+    { "type": "couple", "variant": "editorial" },
+    { "type": "story", "variant": "minimal" },
+    { "type": "gallery", "variant": "grid" },
+    { "type": "countdown", "variant": "classic" },
+    { "type": "event", "variant": "compact" },
+    { "type": "dresscode", "variant": "card" },
+    { "type": "location", "variant": "split" },
+    { "type": "drive", "variant": "classic" },
+    { "type": "footer", "variant": "minimal" }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "costa",
+  "slug": "costa",
+  "name": "Costa",
+  "description": "Luz, aire y mar: cabecera a pantalla completa, pareja cercana e historia en prosa. Fiel a las bodas frente al mar.",
+  "category": "Costa · Aire libre",
+  "version": 1,
+  "themeId": "classic-white",
+  "musicUrl": "https://archive.org/download/ClairDeLune_2022/Clair-De-Lune.mp3",
+  "suggestedThemeIds": ["classic-white", "ivory", "garden", "champagne"],
+  "sections": [
+    { "type": "hero", "variant": "fullscreen" },
+    { "type": "couple", "variant": "classic" },
+    { "type": "story", "variant": "editorial" },
+    { "type": "gallery", "variant": "grid" },
+    { "type": "countdown", "variant": "flip" },
+    { "type": "event", "variant": "compact" },
+    { "type": "dresscode", "variant": "swatch" },
+    { "type": "location", "variant": "split" },
+    { "type": "drive", "variant": "button" },
+    { "type": "footer", "variant": "classic" }
+  ]
+}

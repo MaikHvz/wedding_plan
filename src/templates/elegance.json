@@ -1,0 +1,30 @@
+{
+  "id": "elegance",
+  "slug": "elegance",
+  "name": "Elegance",
+  "description": "La plantilla clásica del builder: tipografías finas, paleta neutra cálida y mucho aire. Cambia solo el color de todo el diseño en un clic.",
+  "category": "Elegante",
+  "version": 1,
+  "themeId": "ivory",
+  "musicUrl": "https://archive.org/download/ClairDeLune_2022/Clair-De-Lune.mp3",
+  "suggestedThemeIds": [
+    "ivory",
+    "romantic",
+    "champagne",
+    "garden",
+    "classic-white",
+    "modern-black"
+  ],
+  "sections": [
+    { "type": "hero", "variant": "fullscreen" },
+    { "type": "couple", "variant": "editorial" },
+    { "type": "story", "variant": "timeline" },
+    { "type": "gallery", "variant": "carousel" },
+    { "type": "countdown", "variant": "minimal" },
+    { "type": "event", "variant": "classic" },
+    { "type": "dresscode", "variant": "classic" },
+    { "type": "location", "variant": "split" },
+    { "type": "drive", "variant": "button" },
+    { "type": "footer", "variant": "classic" }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "clasica",
+  "slug": "clasica",
+  "name": "Clásica",
+  "description": "La ceremonia tradicional en su mejor versión: encabezado centrado, galería editorial y detalle de evento clásico. Sofisticación en tono champagne.",
+  "category": "Clásica · Solemne",
+  "version": 1,
+  "themeId": "champagne",
+  "musicUrl": "https://archive.org/download/ClairDeLune_2022/Clair-De-Lune.mp3",
+  "suggestedThemeIds": ["champagne", "ivory", "classic-white", "garden"],
+  "sections": [
+    { "type": "hero", "variant": "classic" },
+    { "type": "couple", "variant": "classic" },
+    { "type": "story", "variant": "timeline" },
+    { "type": "gallery", "variant": "editorial" },
+    { "type": "countdown", "variant": "minimal" },
+    { "type": "event", "variant": "classic" },
+    { "type": "dresscode", "variant": "classic" },
+    { "type": "location", "variant": "centered" },
+    { "type": "drive", "variant": "button" },
+    { "type": "footer", "variant": "classic" }
+  ]
+}
