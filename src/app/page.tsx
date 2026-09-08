@@ -1,8 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import type { TemplateConfig } from "@/types";
 import { getAllTemplateConfigs } from "@/lib/templates";
+import { getTemplateDemo } from "@/lib/templates/demos";
 import { TemplatePreview } from "@/components/templates/TemplatePreview";
+import { BrowserFrame } from "@/components/templates/BrowserFrame";
+import { BackgroundImage } from "@/components/wedding/BackgroundImage";
+import { AmbientShader } from "@/components/wedding/AmbientShader";
+import { LaurelWreath } from "@/components/wedding/Motifs";
 import { APP_NAME } from "@/config/app";
 import {
   JsonLd,
@@ -10,6 +16,9 @@ import {
   serviceSchema,
   websiteSchema,
 } from "@/config/seo";
+
+/** Fotografías reales de las demos, usadas como mosaico ambiental del hero. */
+const HERO_MOSAIC_SLUGS = ["elegance", "boho", "urbana", "clasica", "costa"];
 
 export const metadata: Metadata = {
   alternates: {
@@ -58,37 +67,52 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-stone-100/80 via-transparent to-transparent px-6 pt-20 pb-16 text-center">
-        <p className="mb-4 text-sm uppercase tracking-[0.3em] text-neutral-500">
-          Tu página de boda, lista en minutos
-        </p>
-        <h1 className="mx-auto max-w-3xl font-serif text-4xl font-semibold leading-tight text-balance sm:text-6xl">
-          Tu boda merece una página{" "}
-          <span className="text-neutral-400">tan bonita como el día</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-xl text-pretty text-lg text-neutral-600">
-          Elige una plantilla, personaliza cada detalle con el editor visual y
-          comparte la URL con tus invitados. Sin programar y sin límites: solo
-          pagas cuando la quieres publicar.
-        </p>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href="/login"
-            className="min-w-44 rounded-full bg-neutral-900 px-8 py-3 font-medium text-white hover:bg-neutral-700"
-          >
-            Crear gratis
-          </Link>
-          <Link
-            href="/plantillas"
-            className="min-w-44 rounded-full border border-neutral-300 px-8 py-3 font-medium hover:border-neutral-900"
-          >
-            Explorar plantillas
-          </Link>
+      {/* Hero — mosaico de bodas reales (demos) + ambientación del producto */}
+      <section
+        style={
+          {
+            "--t-accent": "#b98a5e",
+            "--t-accent-soft": "#e9d9c8",
+          } as CSSProperties
+        }
+        className="relative isolate overflow-hidden px-6 pt-24 pb-24 text-center text-white sm:pt-32 sm:pb-32"
+      >
+        <HeroMosaic />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/55 to-black/80" />
+        <AmbientShader templateId="boho" onImage className="opacity-80" />
+
+        <div className="relative">
+          <LaurelWreath className="hero-in mx-auto h-8 w-28 text-white/70" />
+          <p className="hero-in mt-5 text-sm uppercase tracking-[0.3em] text-white/70">
+            Tu página de boda, lista en minutos
+          </p>
+          <h1 className="hero-in mx-auto mt-4 max-w-3xl font-serif text-4xl font-semibold leading-tight text-balance sm:text-6xl">
+            Tu boda merece una página{" "}
+            <span className="text-white/60">tan bonita como el día</span>
+          </h1>
+          <p className="hero-in mx-auto mt-6 max-w-xl text-pretty text-lg text-white/85">
+            Elige una plantilla, personaliza cada detalle con el editor visual
+            y comparte la URL con tus invitados. Sin programar y sin límites:
+            solo pagas cuando la quieres publicar.
+          </p>
+          <div className="hero-in mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/login"
+              className="min-w-44 rounded-full bg-white px-8 py-3 font-medium text-neutral-900 hover:bg-neutral-100"
+            >
+              Crear gratis
+            </Link>
+            <Link
+              href="/plantillas"
+              className="min-w-44 rounded-full border border-white/50 px-8 py-3 font-medium text-white hover:border-white"
+            >
+              Explorar plantillas
+            </Link>
+          </div>
+          <p className="hero-in mt-6 text-xs text-white/60">
+            Pago único al publicar · Tus datos siempre contigo
+          </p>
         </div>
-        <p className="mt-6 text-xs text-neutral-400">
-          Pago único al publicar · Tus datos siempre contigo
-        </p>
       </section>
 
       {/* Previews destacados */}
@@ -110,16 +134,16 @@ export default function HomePage() {
           title="Diseñadas por parejas profesionales, listas para ti"
           description="Estructuras únicas y paletas que se recolorizan en un clic. Cada plantilla incluye su demo completa."
         />
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {templates.map((template) => (
             <Link
               key={template.slug}
               href={`/plantillas/${template.slug}`}
               className="group flex flex-col gap-3"
             >
-              <div className="rounded-lg ring-1 ring-black/5 transition-shadow group-hover:shadow-lg">
+              <BrowserFrame>
                 <TemplatePreview template={template} themeId={previewThemeId(template)} />
-              </div>
+              </BrowserFrame>
               <div>
                 <p className="font-serif text-sm font-semibold">
                   {template.name}
@@ -295,13 +319,38 @@ export default function HomePage() {
   );
 }
 
+/** Mosaico de fondo del hero: fotos reales de cada ambientación de boda,
+ * con Ken Burns en la imagen central para dar movimiento sin distraer. */
+function HeroMosaic() {
+  const images = HERO_MOSAIC_SLUGS.map((slug) => ({
+    slug,
+    src: getTemplateDemo(slug)?.data?.hero?.image as string | undefined,
+  })).filter((item) => Boolean(item.src));
+
+  if (images.length === 0) {
+    return <div className="absolute inset-0 -z-20 bg-neutral-900" />;
+  }
+
+  return (
+    <div className="absolute inset-0 -z-20 grid grid-cols-2 gap-[2px] sm:grid-cols-5">
+      {images.map((item, index) => (
+        <div
+          key={item.slug}
+          className={`relative overflow-hidden ${index === 0 ? "col-span-2 sm:col-span-1" : ""}`}
+        >
+          <BackgroundImage src={item.src} kenBurns={index === 2} lazy={index > 1} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function FeaturedTemplate({ template }: { template: TemplateConfig }) {
   return (
-    <Link
-      href={`/plantillas/${template.slug}`}
-      className="group relative block overflow-hidden rounded-xl ring-1 ring-black/5 transition-shadow hover:shadow-xl"
-    >
-      <TemplatePreview template={template} themeId={previewThemeId(template)} />
+    <Link href={`/plantillas/${template.slug}`} className="group relative block">
+      <BrowserFrame url={`tuboda.cl/w/${template.slug}`}>
+        <TemplatePreview template={template} themeId={previewThemeId(template)} />
+      </BrowserFrame>
     </Link>
   );
 }

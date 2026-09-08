@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { TemplateConfig, Theme } from "@/types";
 import { useTemplateAction } from "@/app/plantillas/actions";
 import { TemplatePreview } from "./TemplatePreview";
+import { BrowserFrame } from "./BrowserFrame";
 
 /**
  * Tarjeta del catálogo (v2, m05).
@@ -25,13 +26,15 @@ export function TemplateCard({
     .filter((theme): theme is Theme => theme !== null);
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white">
+    <article className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-shadow hover:shadow-lg">
       <Link
         href={`/plantillas/${template.slug}`}
-        className="block transition-opacity hover:opacity-90"
+        className="block p-3 pb-0"
         aria-label={`Ver demo de ${template.name}`}
       >
-        <TemplatePreview template={template} themeId={themeId} />
+        <BrowserFrame url={`tuboda.cl/w/${template.slug}`}>
+          <TemplatePreview template={template} themeId={themeId} />
+        </BrowserFrame>
       </Link>
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-start justify-between gap-2">
